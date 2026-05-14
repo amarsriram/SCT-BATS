@@ -1,22 +1,36 @@
-/* ══════════════════════════════════════════════
-   BAT SECTIONS — Mobile-First Band Layout
-   Frame order: Badge → Bat+Desc → Specs → Price
-   ══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   GLOBAL — Scroll Hints
+   ══════════════════════════════════════════════════════ */
 
-/* ── Composite Screen (snap wrapper) ── */
-.composite-screen {
-  display: flex;
-  flex-direction: column;
-  height: 100svh;
-  overflow: hidden;
-  background: #080808;
+/* Vertical hint: fade-out class toggled via JS */
+.v-scroll-badge.hint--hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
-/* ── Hero Band (30% of first screen) ── */
+/* ══════════════════════════════════════════════════════
+   BAT SECTIONS — Mobile-First Band Layout
+   Frame order (mobile swipe): Badge → Bat → Specs → Price
+   ══════════════════════════════════════════════════════ */
+
+/* ── Container ── */
+#bat-sections-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile: wrapper merges into flow */
+.bat-scroll-wrapper {
+  display: contents;
+}
+
+/* ── Hero Band: 30vh on mobile ── */
 .ch-hero-band {
   position: relative;
-  flex: 0 0 30%;
+  height: 30vh;
+  flex: 0 0 30vh;
   overflow: hidden;
+  scroll-snap-align: start;
 }
 .ch-hero-img-wrap {
   position: absolute;
@@ -26,21 +40,24 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left top; /* Move content towards right */
+  object-position: center center;
+}
+/* Landscape fix: ensure top branding isn't cut on short screens */
+@media (max-height: 600px) and (orientation: landscape) {
+  .ch-hero-img {
+    object-position: center top;
+  }
 }
 .ch-hero-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(8,8,8,0.1) 0%,
-    rgba(8,8,8,0.05) 50%,
-    rgba(8,8,8,0.55) 100%
-  );
+  background:
+    linear-gradient(180deg, rgba(8,8,8,0.15) 0%, transparent 30%),
+    linear-gradient(0deg, rgba(8,8,8,0.85) 0%, transparent 50%);
 }
 
-/* ── Hero Corner Chat Button (Absolute to Hero) ── */
+/* ── Hero Chat Button ── */
 .hero-corner-chat {
   position: absolute;
   top: 1.25rem;
@@ -50,7 +67,7 @@
   align-items: center;
   gap: 0.4rem;
   background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.18);
   color: #fff;
   font-family: var(--font-heading);
   font-weight: 700;
@@ -59,65 +76,107 @@
   text-transform: uppercase;
   padding: 0.45rem 0.9rem;
   border-radius: 100px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   text-decoration: none;
-  transition: all var(--transition);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: background var(--transition), transform var(--transition);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
 }
-
+.hero-corner-chat:hover,
+.hero-corner-chat:focus-visible {
+  background: rgba(255,255,255,0.14);
+  outline: none;
+}
 .hero-corner-chat:active {
   transform: scale(0.96);
-  background: rgba(255,255,255,0.15);
 }
 
-/* ── Vertical Scroll Badge (Global) ── */
+/* ── Vertical Scroll Badge ── */
 .v-scroll-badge {
   position: fixed;
-  bottom: 1.5rem;
+  bottom: 1.8rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 90;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1rem;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  gap: 0.7rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(20,20,20,0.6);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 100px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   pointer-events: none;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+  box-shadow: 
+    0 4px 24px rgba(0,0,0,0.4),
+    inset 0 1px 1px rgba(255,255,255,0.05);
 }
-
 .v-scroll-badge span {
   font-family: var(--font-heading);
-  font-size: 0.55rem;
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.6);
 }
-
 .v-scroll-arrow {
   color: #fff;
   animation: scroll-arrow-nudge 1.5s infinite ease-in-out;
 }
-
 @keyframes scroll-arrow-nudge {
   0%, 100% { transform: translateY(-2px); opacity: 0.5; }
-  50% { transform: translateY(2px); opacity: 1; }
+  50%       { transform: translateY(2px);  opacity: 1;   }
 }
 
-/* ── Bat Band (35% of screen) ── */
+/* ── Bat Band ── */
 .bat-band {
   position: relative;
-  flex: 0 0 35%;
+  height: 35vh;
+  flex: 0 0 35vh;
   display: flex;
   flex-direction: column;
   border-top: 1px solid rgba(255,255,255,0.06);
   overflow: hidden;
 }
+
+@media (max-width: 1023px) {
+  /* Group 1: Hero(30) + Bat1(35) + Bat2(35) = 100vh */
+  .bat-band:nth-child(1),
+  .bat-band:nth-child(2) {
+    height: 35vh;
+    flex: 0 0 35vh;
+  }
+
+  /* Group 2 Start: Bat3(30) + Bat4(35) + Bat5(35) = 100vh */
+  .bat-band:nth-child(3) {
+    height: 30vh;
+    flex: 0 0 30vh;
+    scroll-snap-align: start;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .bat-band:nth-child(4),
+  .bat-band:nth-child(5) {
+    height: 35vh;
+    flex: 0 0 35vh;
+  }
+}
+
+/* Mobile Landscape Override: Full height for all sections */
+@media (max-width: 1023px) and (orientation: landscape) {
+  .ch-hero-band {
+    height: 100vh;
+    flex: 0 0 100vh;
+  }
+  .bat-band,
+  .bat-band:nth-child(n) {
+    height: 100vh;
+    flex: 0 0 100vh;
+    scroll-snap-align: start;
+  }
+}
+
 
 .bat-theme-bg {
   position: absolute;
@@ -127,11 +186,15 @@
 .bat-bg-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(1px);
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.5) 0%,
+    rgba(0,0,0,0.3) 40%,
+    rgba(0,0,0,0.55) 100%
+  );
 }
 
-/* ── Horizontal Scroll ── */
+/* ── Horizontal Scroll Track ── */
 .bat-hscroll {
   flex: 1;
   overflow-x: scroll;
@@ -159,7 +222,9 @@
   display: flex;
   align-items: center;
   padding: 0 1.25rem;
+  box-sizing: border-box;
   overflow: hidden;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%);
 }
 
 /* ── Info Column ── */
@@ -167,12 +232,12 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
   z-index: 2;
   min-width: 0;
 }
 
-/* ── Peek Column (default) ── */
+/* ── Peek Column ── */
 .frame-peek {
   width: 85px;
   height: 100%;
@@ -183,63 +248,58 @@
   margin-left: 0.75rem;
   z-index: 2;
 }
-
-/* Badge peek — wider to show badge properly */
 .frame-peek--badge {
   width: 130px;
 }
 
-/* ════════════════════════════
+/* ════════════
    FRAME 1: Badge
-   ════════════════════════════ */
+   ════════════ */
 
 .bat-pill {
   display: inline-block;
   width: fit-content;
   font-family: var(--font-heading);
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 0.15rem 0.55rem;
+  padding: 0.15rem 0.6rem;
   border: 1.5px solid;
   border-radius: 100px;
   background: rgba(0,0,0,0.3);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
-
 .bat-title {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 7vw, 2.2rem);
+  font-size: clamp(1.5rem, 8vw, 2.4rem);
   letter-spacing: 0.04em;
-  line-height: 1.05;
+  line-height: 1.02;
   color: #fff;
   text-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
-
 .bat-subtitle {
   font-family: var(--font-heading);
-  font-size: 0.55rem;
+  font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.45);
 }
-
 .swipe-cue {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  margin-top: 0.35rem;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
   font-family: var(--font-heading);
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--bat-primary);
   animation: nudge-right 2s ease-in-out infinite;
 }
-
 .peek-badge {
   height: 85%;
   width: auto;
@@ -249,9 +309,9 @@
   opacity: 0.9;
 }
 
-/* ════════════════════════════
-   FRAME 2: Bat PNG (Hero) + Caption
-   ════════════════════════════ */
+/* ════════════
+   FRAME 2: Bat Image
+   ════════════ */
 
 .frame--bat {
   flex-direction: column;
@@ -260,7 +320,6 @@
   padding: 0.8rem 1.25rem 0.6rem;
   gap: 0;
 }
-
 .frame-bat-hero {
   flex: 1;
   display: flex;
@@ -270,167 +329,166 @@
   min-height: 0;
   overflow: hidden;
 }
-
 .bat-hero-img {
   max-height: 95%;
   max-width: 85%;
   object-fit: contain;
   filter: drop-shadow(0 10px 40px rgba(0,0,0,0.7));
   animation: bat-float 5s ease-in-out infinite alternate;
-  transform: rotate(-2deg); /* Slight tilt for dynamism */
+  transform: rotate(-2deg);
 }
-
 .frame-bat-caption {
   width: 100%;
   text-align: center;
   padding-bottom: 0.2rem;
   flex-shrink: 0;
 }
-
 .bat-tagline {
   font-family: var(--font-heading);
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: rgba(255,255,255,0.6);
-  line-height: 1.2;
+  line-height: 1.3;
   text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
-/* ════════════════════════════
+/* ════════════
    FRAME 3: Specs
-   ════════════════════════════ */
+   ════════════ */
 
 .specs-heading {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.08em;
   color: var(--bat-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
-
 .specs-grid {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-
 .spec-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  background: rgba(255,255,255,0.02);
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.015);
   margin-bottom: 2px;
   border-radius: 4px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+.spec-item:nth-child(odd) { background: rgba(255,255,255,0.025); }
+.spec-item:hover {
+  background: rgba(var(--bat-primary-rgb), 0.08);
+  border-color: rgba(var(--bat-primary-rgb), 0.15);
+  transform: translateX(4px);
 }
 .spec-item:last-child { border-bottom: none; }
-
 .spec-key {
   font-family: var(--font-heading);
-  font-size: 0.55rem;
+  font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.45);
 }
-
 .spec-val {
   font-family: var(--font-heading);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--bat-accent);
   text-align: right;
   text-shadow: 0 0 10px var(--bat-glow);
 }
 
-/* ════════════════════════════
+/* ════════════
    FRAME 4: Price + CTA
-   ════════════════════════════ */
+   ════════════ */
 
 .frame-info--cta {
-  gap: 0.6rem;
+  gap: 0.65rem;
 }
-
 .price-block {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
-
 .price-mrp {
   font-family: var(--font-heading);
-  font-size: 0.6rem;
-  color: rgba(255,255,255,0.3);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.35);
 }
-.price-mrp s {
-  text-decoration: line-through;
-}
-
+.price-mrp s { text-decoration: line-through; }
 .price-off {
   font-family: var(--font-heading);
-  font-size: 0.5rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.15em;
-  padding: 0.12rem 0.45rem;
+  padding: 0.12rem 0.5rem;
   border: 1.5px solid;
   border-radius: 100px;
   background: rgba(0,0,0,0.3);
 }
-
 .price-final {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   color: #fff;
   line-height: 1;
   width: 100%;
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
 }
-
 .cta-row {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.5rem;
   width: 100%;
 }
-
 .cta-btn {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  padding: 0.6rem 0.4rem;
+  padding: 0.65rem 0.4rem;
   border-radius: 10px;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.05em;
-  transition: transform var(--transition);
   text-decoration: none;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  -webkit-tap-highlight-color: transparent;
 }
-.cta-btn:active { 
-  transform: scale(0.96); 
-  box-shadow: 0 0 15px var(--bat-glow);
+.cta-btn:hover,
+.cta-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 18px var(--bat-glow);
 }
-
+.cta-btn:active { transform: scale(0.96); }
 .cta-btn--order {
-  background: rgba(255,255,255,0.04);
-  border: 1.2px solid var(--bat-primary);
+  background: linear-gradient(135deg, rgba(var(--bat-primary-rgb, 255,255,255), 0.12) 0%, rgba(var(--bat-primary-rgb, 255,255,255), 0.04) 100%);
+  border: 1.5px solid var(--bat-primary);
   color: var(--bat-primary);
-  text-shadow: 0 0 8px var(--bat-glow);
+  text-shadow: 0 0 10px var(--bat-glow);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
-
+.cta-btn--order:hover {
+  background: linear-gradient(135deg, rgba(var(--bat-primary-rgb, 255,255,255), 0.18) 0%, rgba(var(--bat-primary-rgb, 255,255,255), 0.08) 100%);
+}
 .cta-btn--call {
   background: transparent;
-  border: 1.2px solid var(--bat-primary);
-  color: var(--bat-primary);
-  opacity: 0.8;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.6);
 }
-
-.cta-btn--call:active {
-  opacity: 1;
+.cta-btn--call:hover,
+.cta-btn--call:focus-visible {
+  border-color: var(--bat-primary);
+  color: var(--bat-primary);
 }
 
 /* ── Dot Navigation ── */
@@ -443,62 +501,289 @@
   gap: 0.3rem;
   z-index: 5;
 }
-
 .dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.2);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 .dot.active {
   background: var(--bat-primary);
-  transform: scale(1.3);
-  box-shadow: 0 0 5px var(--bat-glow);
+  transform: scale(1.4);
+  box-shadow: 0 0 6px var(--bat-glow);
 }
 
-/* ══════════════════════════════
+/* ══════════════════
    ANIMATIONS
-   ══════════════════════════════ */
-
+   ══════════════════ */
 @keyframes nudge-right {
   0%, 100% { transform: translateX(0); }
-  50%      { transform: translateX(4px); }
+  50%       { transform: translateX(4px); }
 }
-
 @keyframes bat-float {
   from { transform: translateY(0) rotate(-1deg); }
-  to   { transform: translateY(-5px) rotate(1deg); }
+  to   { transform: translateY(-6px) rotate(1deg); }
 }
 
-/* ══════════════════════════════
-   DESKTOP (768px+)
-   ══════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   DESKTOP LAYOUT (min-width: 1024px)
+   ══════════════════════════════════════════════════════════════ */
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
+
+  /* ── 1. Container: vertical flow ── */
+  #bat-sections-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* NOTE: no overflow:hidden here — bat-scroll-wrapper needs to scroll */
+  }
+
+  /* ── 2. Hero: full viewport snap section ── */
+  .ch-hero-band {
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    flex: 0 0 100vh;
+    scroll-snap-align: start;
+    /* Override snap-section overflow:hidden which is on this element */
+    overflow: hidden;
+  }
+  .ch-hero-img {
+    object-position: right center;
+  }
+
+  /* ── 3. Bat Scroll Wrapper: horizontal snap, full viewport ── */
+  .bat-scroll-wrapper {
+    /* Reset mobile 'display:contents' */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    height: 100vh;
+    min-height: 100vh;
+    flex: 0 0 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+  }
+  .bat-scroll-wrapper::-webkit-scrollbar {
+    display: block;
+    height: 5px;
+  }
+  .bat-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+  }
+  .bat-scroll-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* ── 4. Each Bat Band: fixed 25vw column ── */
+  .bat-band {
+    flex: 0 0 25vw;
+    min-width: 25vw;
+    max-width: 25vw;
+    height: 100vh;
+    border-top: none;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    scroll-snap-align: start;
+    flex-basis: 25vw !important;
+    transition: filter 0.4s ease;
+  }
+  .bat-band:last-child { border-right: none; }
+  .bat-band:hover {
+    filter: brightness(1.08);
+  }
+
+  /* ── 5. Internal Column Layout ── */
+  .bat-hscroll {
+    overflow: hidden; /* No h-scroll on desktop */
+    width: 100%;
+    height: 100%;
+    flex: 1;
+  }
+  .bat-hscroll-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1.5vh 0 2vh;
+    box-sizing: border-box;
+    justify-content: space-between;
+    /* Reset mobile width:max-content */
+    width: 100% !important;
+  }
+
+  /* ── 6. Frames: stack vertically ── */
   .bat-frame {
-    padding: 0 3rem;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    /* Disable mobile horizontal snap */
+    scroll-snap-align: none;
   }
-  .frame-peek {
-    width: 140px;
+
+  /* ── 7. Frame: Badge (top) ── */
+  .frame--badge {
+    flex: 0 0 auto;
+    padding-top: 1.25rem;
+    padding-bottom: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
   }
-  .frame-peek--badge {
-    width: 180px;
+  .frame--badge .frame-info { align-items: flex-start; }
+  .bat-title   { font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1; }
+  .bat-pill    { font-size: 0.6rem; margin-bottom: 0.35rem; }
+  .bat-subtitle { font-size: 0.6rem; }
+
+  /* ── 8. Frame: Bat Image (flex:1 fills center) ── */
+  .frame--bat {
+    flex: 1;
+    min-height: 140px; /* prevents total collapse on short screens */
+    padding: 0.75rem 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-  .bat-title {
-    font-size: clamp(2rem, 4vw, 3rem);
+  .frame-bat-hero {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
   .bat-hero-img {
-    max-width: 50%;
+    max-height: 100%;
+    max-width: 90%;
+    object-fit: contain;
+    transform: rotate(-3deg);
+    filter: drop-shadow(0 15px 45px rgba(0,0,0,0.8));
+    animation: none; /* disable float on desktop for stability */
+    transition: transform 0.4s ease;
   }
-  .specs-grid {
-    max-width: 360px;
+  .bat-band:hover .bat-hero-img {
+    transform: rotate(-1deg) scale(1.03);
   }
-  .cta-row {
-    max-width: 400px;
+  .frame-bat-caption { display: none; }
+
+  /* ── 9. Frame: Specs (bottom) ── */
+  .frame--specs {
+    flex: 0 0 auto;
+    padding: 0.5rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
-  .price-final {
-    font-size: 2rem;
+  .specs-heading { display: none; }
+  .specs-grid { gap: 0; }
+  .spec-item {
+    padding: 0.2rem 0.5rem;
+    border: none;
+    background: transparent;
+    margin-bottom: 0;
   }
+  .spec-key { font-size: 0.65rem; }
+  .spec-val { font-size: 0.8rem; }
+
+  /* ── 10. Frame: CTA (bottom) ── */
+  .frame--cta {
+    flex: 0 0 auto;
+    padding: 0.5rem 1.5rem 1.75rem;
+  }
+  .frame-info--cta { gap: 0.5rem; align-items: center; width: 100%; }
+  .price-block { justify-content: center; }
+  .price-final { font-size: 1.8rem; text-align: center; }
+  .price-mrp, .price-off { font-size: 0.7rem; }
+  .cta-row { flex-direction: column; gap: 0.45rem; width: 100%; }
+  .cta-btn {
+    padding: 0.65rem;
+    font-size: 0.65rem;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  /* ── 11. Hide mobile-only UI ── */
+  .swipe-cue,
+  .band-dots,
+  .frame-peek { display: none !important; }
+
+  /* ── 12. Horizontal Scroll Hint (desktop-only) ── */
+  .h-scroll-hint {
+    position: fixed;
+    top: 50%;
+    right: 2.5rem;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1.25rem;
+    background: rgba(20,20,20,0.75);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 100px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50%) translateX(30px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .h-scroll-hint.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+  }
+  .h-scroll-hint svg {
+    animation: h-nudge 1.5s infinite ease-in-out;
+    flex-shrink: 0;
+  }
+  @keyframes h-nudge {
+    0%, 100% { transform: translateX(-2px); opacity: 0.6; }
+    50%       { transform: translateX(3px);  opacity: 1; }
+  }
+}
+
+/* Mobile: hide the desktop scroll hint entirely */
+@media (max-width: 1023px) {
+  .h-scroll-hint { display: none !important; }
+}
+
+/* ── Large Desktop (1440px+) ── */
+@media (min-width: 1440px) {
+  .bat-title   { font-size: 2.2rem; }
+  .bat-frame   { padding: 0 2rem; }
+  .frame--specs,
+  .frame--cta  { padding-left: 2rem; padding-right: 2rem; }
+  .spec-key    { font-size: 0.7rem; }
+  .spec-val    { font-size: 0.85rem; }
+  .price-final { font-size: 2rem; }
+  .cta-btn     { font-size: 0.7rem; padding: 0.75rem; }
+}
+
+/* ── Tall desktop (portrait tablet, 1024px+, 900px+ height) ── */
+@media (min-width: 1024px) and (min-height: 900px) {
+  .frame--bat { min-height: 200px; }
+  .bat-hero-img { max-width: 85%; }
 }

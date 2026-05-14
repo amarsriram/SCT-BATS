@@ -44,7 +44,7 @@ export const BATS = [
     images: {
       badge: '/storm%20badge.png',
       bat: '/storm%20bat.png',
-      bg: '/strom%20bg.png',
+      bg: '/storm%20bg.png', // BUG FIX: was 'strom%20bg.png'
     },
     theme: {
       primary: '#2563EB',

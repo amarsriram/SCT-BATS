@@ -3,31 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!-- Removed user-scalable=no: bad for accessibility; allow pinch-zoom -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SCT Cricket | Premium Bats</title>
-    <meta name="description" content="SCT (StarCity) Premium Cricket Bats. Engineered for power, built for the elite." />
-    
+    <meta name="description" content="SCT (StarCity) Premium Cricket Bats — Engineered for power, built for the elite. Player Edition, Storm Edition, and more." />
+    <meta name="theme-color" content="#080808" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="SCT Cricket | Premium Bats" />
+    <meta property="og:description" content="Premium cricket bats engineered for power. Player, Storm, Punisher, Gold and Aqua editions." />
+    <meta property="og:type" content="website" />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Preload Critical Images -->
     <link rel="preload" href="/hero.png" as="image" fetchpriority="high">
   </head>
   <body>
     <!-- Global Vertical Scroll Badge -->
-    <div id="global-scroll-hint" class="v-scroll-badge">
+    <div id="global-scroll-hint" class="v-scroll-badge" aria-hidden="true">
       <span>Scroll</span>
-      <svg class="v-scroll-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="v-scroll-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
       </svg>
     </div>
 
-    <div id="scroll-root">
-      <!-- Consolidated Bat Sections (Hero + all 5 Bats) -->
+    <div id="scroll-root" role="main">
       <div id="bat-sections-container"></div>
-
       <footer id="footer"></footer>
     </div>
 

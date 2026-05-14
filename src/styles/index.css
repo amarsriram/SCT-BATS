@@ -3,10 +3,7 @@
 @import '../components/sections/bat-sections/bat-sections.css';
 @import '../components/layout/footer/footer.css';
 
-/* Custom scroll root adjustments */
-#scroll-root {
-  height: 100svh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  background: var(--color-bg);
-}
+/* 
+   index.css: Entry point for styles. 
+   Core layout rules have been moved to main.css to keep this file lean.
+*/

@@ -1,7 +1,12 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html, body {
   height: 100%;
+  /* overflow:hidden keeps all scrolling inside #scroll-root */
   overflow: hidden;
   background: var(--color-bg);
   color: var(--color-text);
@@ -10,19 +15,22 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#app { height: 100%; display: flex; flex-direction: column; }
-
+/* Main scroll container — defined here, height set in index.css via 100svh */
 #scroll-root {
-  flex: 1;
+  height: 100svh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  background: var(--color-bg);
 }
 #scroll-root::-webkit-scrollbar { display: none; }
 
+/* Snap section base: used by hero and footer only.
+   bat-scroll-wrapper defines its own snap-align directly. */
 .snap-section {
   height: 100svh;
+  min-height: 100svh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   position: relative;
@@ -30,10 +38,25 @@ html, body {
 }
 
 a { text-decoration: none; color: inherit; }
-button { border: none; cursor: pointer; font-family: var(--font-body); }
+button { border: none; cursor: pointer; font-family: var(--font-body); background: none; }
 svg { display: block; }
+img { max-width: 100%; display: block; }
 
 .visually-hidden {
-  position: absolute; width: 1px; height: 1px;
-  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
