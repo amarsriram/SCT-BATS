@@ -1,10 +1,8 @@
-import './style.css';
-import { renderNavbar } from './components/navbar/navbar.js';
-import { renderBatSections } from './components/bat-sections/bat-sections.js';
-import { renderFooter } from './components/footer/footer.js';
+import './styles/index.css';
+import { renderBatSections } from './components/sections/bat-sections/bat-sections.js';
+import { renderFooter } from './components/layout/footer/footer.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderNavbar();
   renderBatSections();
   renderFooter();
 

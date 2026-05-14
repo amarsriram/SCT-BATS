@@ -1,0 +1,12 @@
+@import './variables.css';
+@import './main.css';
+@import '../components/sections/bat-sections/bat-sections.css';
+@import '../components/layout/footer/footer.css';
+
+/* Custom scroll root adjustments */
+#scroll-root {
+  height: 100svh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  background: var(--color-bg);
+}

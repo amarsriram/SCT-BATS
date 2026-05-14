@@ -1,5 +1,5 @@
-import { BATS } from '../../data/bats.js';
-import { formatPrice, getFinalPrice, getWhatsAppUrl, getCallUrl } from '../../utils/helpers.js';
+import { BATS } from '../../../data/bats.js';
+import { formatPrice, getFinalPrice, getWhatsAppUrl, getCallUrl } from '../../../utils/helpers.js';
 
 export function renderBatSections() {
   const container = document.getElementById('bat-sections-container');
@@ -14,7 +14,7 @@ export function renderBatSections() {
   heroBand.className = 'ch-hero-band';
   heroBand.innerHTML = `
     <div class="ch-hero-img-wrap">
-      <img src="/hero.png" alt="SCT Cricket Bats" class="ch-hero-img" />
+      <img src="/hero.png" alt="SCT Cricket Bats" class="ch-hero-img" fetchpriority="high" decoding="sync" />
     </div>
     <div class="ch-hero-overlay"></div>
     <a href="https://wa.me/918143863355" target="_blank" rel="noopener noreferrer" class="hero-corner-chat">
@@ -25,7 +25,7 @@ export function renderBatSections() {
   screen1.appendChild(heroBand);
 
   BATS.slice(0, 2).forEach(bat => {
-    screen1.appendChild(createBatBand(bat));
+    screen1.appendChild(createBatBand(bat, true));
   });
   container.appendChild(screen1);
 
@@ -34,7 +34,7 @@ export function renderBatSections() {
   screen2.className = 'snap-section composite-screen';
 
   BATS.slice(2).forEach(bat => {
-    const band = createBatBand(bat);
+    const band = createBatBand(bat, false);
     band.style.flex = '1 1 33.33%';
     screen2.appendChild(band);
   });
@@ -60,10 +60,12 @@ export function renderBatSections() {
   initHorizontalScrolls();
 }
 
-function createBatBand(bat) {
+function createBatBand(bat, isEager = false) {
   const finalPrice = getFinalPrice(bat.mrp, bat.discount);
   const waUrl = getWhatsAppUrl(bat);
   const callUrl = getCallUrl();
+
+  const loadingStrategy = isEager ? 'fetchpriority="high" decoding="sync"' : 'loading="lazy" decoding="async"';
 
   const bgStyle = bat.images.bg
     ? `background-image: url('${bat.images.bg}'); background-size: cover; background-position: center;`
@@ -97,14 +99,14 @@ function createBatBand(bat) {
             </div>
           </div>
           <div class="frame-peek frame-peek--badge">
-            <img src="${bat.images.badge}" alt="${bat.edition} Badge" class="peek-badge" loading="lazy" />
+            <img src="${bat.images.badge}" alt="${bat.edition} Badge" class="peek-badge" ${loadingStrategy} />
           </div>
         </div>
 
         <!-- Frame 2: Bat PNG (hero) + minimal desc -->
         <div class="bat-frame frame--bat">
           <div class="frame-bat-hero">
-            <img src="${bat.images.bat}" alt="${bat.edition}" class="bat-hero-img" loading="lazy" />
+            <img src="${bat.images.bat}" alt="${bat.edition}" class="bat-hero-img" ${loadingStrategy} />
           </div>
           <div class="frame-bat-caption">
             <p class="bat-tagline">${bat.tagline}</p>
