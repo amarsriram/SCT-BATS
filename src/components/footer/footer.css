@@ -1,0 +1,176 @@
+#footer {
+  background: radial-gradient(circle at top right, #111 0%, #000 100%);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 5rem 1.5rem 3rem;
+  color: var(--color-text);
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background accent */
+#footer::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 40%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4.5rem;
+  line-height: 0.9;
+  letter-spacing: 0.05em;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+
+.footer-tagline {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 1.5rem;
+}
+
+.footer-motto {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.3);
+  font-weight: 300;
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.footer-heading {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.8rem;
+  background: rgba(15,15,15,0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px; /* Sporty sharp corners */
+  width: 100%;
+  max-width: 320px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+  color: rgba(255,255,255,0.8);
+}
+
+.footer-link svg {
+  transition: transform 0.3s ease;
+}
+
+/* Specific Dark Button Styles */
+.fl-wa { border-left: 3px solid #25D366; }
+.fl-wa:active { background: rgba(37, 211, 102, 0.1); border-color: #25D366; }
+
+.fl-ig { border-left: 3px solid #E4405F; }
+.fl-ig:active { background: rgba(228, 64, 95, 0.1); border-color: #E4405F; }
+
+.fl-call { border-left: 3px solid #34B7F1; }
+.fl-call:active { background: rgba(52, 183, 241, 0.1); border-color: #34B7F1; }
+
+.footer-link:active {
+  transform: translateX(5px);
+  color: #fff;
+}
+
+.link-text {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footer-legal {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    align-items: center;
+  }
+  .footer-brand {
+    text-align: left;
+  }
+  .footer-motto {
+    margin: 0;
+  }
+  .footer-heading::after {
+    left: 0;
+    transform: none;
+  }
+  .footer-links {
+    align-items: flex-end;
+  }
+  .footer-legal {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}

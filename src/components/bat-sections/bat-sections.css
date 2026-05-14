@@ -1,0 +1,504 @@
+/* ══════════════════════════════════════════════
+   BAT SECTIONS — Mobile-First Band Layout
+   Frame order: Badge → Bat+Desc → Specs → Price
+   ══════════════════════════════════════════════ */
+
+/* ── Composite Screen (snap wrapper) ── */
+.composite-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  overflow: hidden;
+  background: #080808;
+}
+
+/* ── Hero Band (30% of first screen) ── */
+.ch-hero-band {
+  position: relative;
+  flex: 0 0 30%;
+  overflow: hidden;
+}
+.ch-hero-img-wrap {
+  position: absolute;
+  inset: 0;
+}
+.ch-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top; /* Move content towards right */
+}
+.ch-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(8,8,8,0.1) 0%,
+    rgba(8,8,8,0.05) 50%,
+    rgba(8,8,8,0.55) 100%
+  );
+}
+
+/* ── Hero Corner Chat Button (Absolute to Hero) ── */
+.hero-corner-chat {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.9rem;
+  border-radius: 100px;
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+  transition: all var(--transition);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.hero-corner-chat:active {
+  transform: scale(0.96);
+  background: rgba(255,255,255,0.15);
+}
+
+/* ── Vertical Scroll Badge (Global) ── */
+.v-scroll-badge {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.v-scroll-badge span {
+  font-family: var(--font-heading);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.v-scroll-arrow {
+  color: #fff;
+  animation: scroll-arrow-nudge 1.5s infinite ease-in-out;
+}
+
+@keyframes scroll-arrow-nudge {
+  0%, 100% { transform: translateY(-2px); opacity: 0.5; }
+  50% { transform: translateY(2px); opacity: 1; }
+}
+
+/* ── Bat Band (35% of screen) ── */
+.bat-band {
+  position: relative;
+  flex: 0 0 35%;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.bat-theme-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.bat-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(1px);
+}
+
+/* ── Horizontal Scroll ── */
+.bat-hscroll {
+  flex: 1;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  position: relative;
+  z-index: 1;
+}
+.bat-hscroll::-webkit-scrollbar { display: none; }
+
+.bat-hscroll-inner {
+  display: flex;
+  height: 100%;
+  width: max-content;
+}
+
+/* ── Frame (each swipe panel) ── */
+.bat-frame {
+  width: 100vw;
+  min-width: 100vw;
+  height: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  overflow: hidden;
+}
+
+/* ── Info Column ── */
+.frame-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  z-index: 2;
+  min-width: 0;
+}
+
+/* ── Peek Column (default) ── */
+.frame-peek {
+  width: 85px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+  z-index: 2;
+}
+
+/* Badge peek — wider to show badge properly */
+.frame-peek--badge {
+  width: 130px;
+}
+
+/* ════════════════════════════
+   FRAME 1: Badge
+   ════════════════════════════ */
+
+.bat-pill {
+  display: inline-block;
+  width: fit-content;
+  font-family: var(--font-heading);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.55rem;
+  border: 1.5px solid;
+  border-radius: 100px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+}
+
+.bat-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 7vw, 2.2rem);
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.bat-subtitle {
+  font-family: var(--font-heading);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+.swipe-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  font-family: var(--font-heading);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bat-primary);
+  animation: nudge-right 2s ease-in-out infinite;
+}
+
+.peek-badge {
+  height: 85%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+  opacity: 0.9;
+}
+
+/* ════════════════════════════
+   FRAME 2: Bat PNG (Hero) + Caption
+   ════════════════════════════ */
+
+.frame--bat {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.25rem 0.6rem;
+  gap: 0;
+}
+
+.frame-bat-hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.bat-hero-img {
+  max-height: 95%;
+  max-width: 85%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 40px rgba(0,0,0,0.7));
+  animation: bat-float 5s ease-in-out infinite alternate;
+  transform: rotate(-2deg); /* Slight tilt for dynamism */
+}
+
+.frame-bat-caption {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 0.2rem;
+  flex-shrink: 0;
+}
+
+.bat-tagline {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/* ════════════════════════════
+   FRAME 3: Specs
+   ════════════════════════════ */
+
+.specs-heading {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--bat-primary);
+  margin-bottom: 0.25rem;
+}
+
+.specs-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 2px;
+  border-radius: 4px;
+}
+.spec-item:last-child { border-bottom: none; }
+
+.spec-key {
+  font-family: var(--font-heading);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+.spec-val {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--bat-accent);
+  text-align: right;
+  text-shadow: 0 0 10px var(--bat-glow);
+}
+
+/* ════════════════════════════
+   FRAME 4: Price + CTA
+   ════════════════════════════ */
+
+.frame-info--cta {
+  gap: 0.6rem;
+}
+
+.price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.price-mrp {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.3);
+}
+.price-mrp s {
+  text-decoration: line-through;
+}
+
+.price-off {
+  font-family: var(--font-heading);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 0.12rem 0.45rem;
+  border: 1.5px solid;
+  border-radius: 100px;
+  background: rgba(0,0,0,0.3);
+}
+
+.price-final {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: #fff;
+  line-height: 1;
+  width: 100%;
+  margin-top: 0.1rem;
+}
+
+.cta-row {
+  display: flex;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.cta-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.4rem;
+  border-radius: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  transition: transform var(--transition);
+  text-decoration: none;
+}
+.cta-btn:active { 
+  transform: scale(0.96); 
+  box-shadow: 0 0 15px var(--bat-glow);
+}
+
+.cta-btn--order {
+  background: rgba(255,255,255,0.04);
+  border: 1.2px solid var(--bat-primary);
+  color: var(--bat-primary);
+  text-shadow: 0 0 8px var(--bat-glow);
+}
+
+.cta-btn--call {
+  background: transparent;
+  border: 1.2px solid var(--bat-primary);
+  color: var(--bat-primary);
+  opacity: 0.8;
+}
+
+.cta-btn--call:active {
+  opacity: 1;
+}
+
+/* ── Dot Navigation ── */
+.band-dots {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.3rem;
+  z-index: 5;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.dot.active {
+  background: var(--bat-primary);
+  transform: scale(1.3);
+  box-shadow: 0 0 5px var(--bat-glow);
+}
+
+/* ══════════════════════════════
+   ANIMATIONS
+   ══════════════════════════════ */
+
+@keyframes nudge-right {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
+}
+
+@keyframes bat-float {
+  from { transform: translateY(0) rotate(-1deg); }
+  to   { transform: translateY(-5px) rotate(1deg); }
+}
+
+/* ══════════════════════════════
+   DESKTOP (768px+)
+   ══════════════════════════════ */
+
+@media (min-width: 768px) {
+  .bat-frame {
+    padding: 0 3rem;
+  }
+  .frame-peek {
+    width: 140px;
+  }
+  .frame-peek--badge {
+    width: 180px;
+  }
+  .bat-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  .bat-hero-img {
+    max-width: 50%;
+  }
+  .specs-grid {
+    max-width: 360px;
+  }
+  .cta-row {
+    max-width: 400px;
+  }
+  .price-final {
+    font-size: 2rem;
+  }
+}
