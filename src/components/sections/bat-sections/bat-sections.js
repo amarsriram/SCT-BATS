@@ -116,7 +116,7 @@ function createBatBand(bat, isEager = false) {
   const callUrl = getCallUrl();
 
   const loadingAttr = isEager
-    ? 'fetchpriority="high" decoding="sync"'
+    ? 'loading="eager" fetchpriority="high" decoding="sync"'
     : 'loading="lazy" decoding="async"';
 
   const bgStyle = bat.images.bg
